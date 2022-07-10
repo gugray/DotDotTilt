@@ -1,26 +1,32 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
-struct Particle
+class Particle
 {
-  static uint16_t nextId;
+private:
+  uint8_t x;
+  uint8_t y; // If highest bit is set: updated = true
+
+public:
   static uint16_t nParticles;
-
-  uint16_t id;
-  int16_t x, y;
-  int16_t vx, vy;
+  static Particle *particles;
+  int8_t vx, vy;
   int16_t movX, movY;
-  bool updated;
-
-  static void init(uint16_t nParticles);
-  void update(int16_t fx, int16_t fy);
 
 private:
   Particle();
   bool tryMove(int8_t dx, int8_t dy);
   void move(int8_t dx, int8_t dy);
+
+public:
+  static void init(uint16_t nParticles);
+  static Particle *getParticle(uint8_t indicator, uint8_t x, uint8_t y);
+  void update(int16_t fx, int16_t fy);
+  int16_t getX();
+  int16_t getY();
+  bool isUpdated();
+  void setUpdated(bool val);
 };
 
-extern Particle *particles;
 
 #endif

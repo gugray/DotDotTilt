@@ -6,7 +6,12 @@
 #include "grid.h"
 #include "particle.h"
 
-#define N_PARTICLES 512
+// TO-DO
+// -- single-byte vx, vy and movX, movY
+// -- cache last screen; leave trace
+
+#define N_PARTICLES 2048
+#define F_ANGLE_MUL 5
 
 #define RESET_PIN 3
 #define CS_PIN 1
@@ -63,6 +68,8 @@ void setup()
   dog.string(0, 3, font_6x8, "Calibrating");
   delay(1000);
   mpu.calcOffsets(true, true);
+  delay(1000);
+  mpu.calcOffsets(true, true);
 
   redraw();
 }
@@ -77,13 +84,13 @@ void loop()
   // snprintf(str, STRLEN, msgAngleY, (int16_t)mpu.getAngleY());
   // dog.string(0, 4, font_6x8, str);
 
-  fx = -5 * (int16_t)mpu.getAngleX();
-  fy = 5 * (int16_t)mpu.getAngleY();
+  fx = -F_ANGLE_MUL * (int16_t)mpu.getAngleX();
+  fy = F_ANGLE_MUL * (int16_t)mpu.getAngleY();
 
   for (uint16_t i = 0; i < Particle::nParticles; ++i)
-    particles[i].update(fx, fy);
+    Particle::particles[i].update(fx, fy);
   for (uint16_t i = 0; i < Particle::nParticles; ++i)
-    particles[i].updated = false;
+    Particle::particles[i].setUpdated(false);
   redraw();
   delay(60);
 }
