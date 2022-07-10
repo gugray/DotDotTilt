@@ -7,18 +7,18 @@ struct Particle
   static uint16_t nParticles;
 
   uint16_t id;
-  uint8_t x, y;
-  uint16_t vx, vy;
-  uint16_t movX, movY;
+  int16_t x, y;
+  int16_t vx, vy;
+  int16_t movX, movY;
   bool updated;
 
   static void init(uint16_t nParticles);
-  void update(uint8_t fx, uint8_t fy);
+  void update(int16_t fx, int16_t fy);
 
 private:
   Particle();
-  bool tryMove(uint8_t dx, uint8_t dy);
-  void move(uint8_t dx, uint8_t dy);
+  bool tryMove(int8_t dx, int8_t dy);
+  void move(int8_t dx, int8_t dy);
 };
 
 extern Particle *particles;

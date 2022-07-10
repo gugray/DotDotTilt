@@ -2,47 +2,32 @@
 #include <SPI.h>
 #include <DOG7565R.h>
 #include <font_6x8.h>
+#include <MPU6050_light.h>
 #include "grid.h"
 #include "particle.h"
-#include "sensor.h"
 
 #define N_PARTICLES 512
 
 #define RESET_PIN 3
-#define CS_PIN 4
-#define A0_PIN 5
+#define CS_PIN 1
+#define A0_PIN 2
 
 DOG7565R dog;
-Sensor sensor;
-uint8_t fx = 0, fy = 0;
+MPU6050 mpu(Wire);
+
+int16_t fx = -40, fy = 60;
+
+#define STRLEN 32
+char str[STRLEN];
+const char *msgAngleX = "X angle: %3d";
+const char *msgAngleY = "Y angle: %3d";
 
 void flash(uint16_t delayAfter = 200)
 {
   digitalWrite(PIN_LED, LOW);
-  delay(20);
+  delay(50);
   digitalWrite(PIN_LED, HIGH);
   delay(delayAfter);
-}
-
-void setup()
-{
-  digitalWrite(PIN_LED, HIGH);
-  pinMode(PIN_LED, OUTPUT);
-
-  dog.initialize(CS_PIN, A0_PIN, RESET_PIN, DOGM128);
-
-  dog.clear();
-  dog.rectangle(71, 2, 127, 2, 0b10101001);
-
-  delay(1000);
-  Particle::init(512);
-
-  dog.string(0, 3, font_6x8, "Sand Simulator");
-  dog.string(0, 4, font_6x8, "Calibrating...");
-  sensor.calibrate();
-  flash();
-
-  delay(1000);
 }
 
 void redraw()
@@ -64,13 +49,41 @@ void redraw()
   }
 }
 
+void setup()
+{
+  digitalWrite(PIN_LED, HIGH);
+  pinMode(PIN_LED, OUTPUT);
+
+  dog.initialize(CS_PIN, A0_PIN, RESET_PIN, DOGM128);
+  Particle::init(N_PARTICLES);
+
+  Wire.begin();
+  mpu.begin();
+
+  dog.string(0, 3, font_6x8, "Calibrating");
+  delay(1000);
+  mpu.calcOffsets(true, true);
+
+  redraw();
+}
+
+
 void loop()
 {
-  sensor.update();
+  mpu.update();
+
+  // snprintf(str, STRLEN, msgAngleX, (int16_t)mpu.getAngleX());
+  // dog.string(0, 3, font_6x8, str);
+  // snprintf(str, STRLEN, msgAngleY, (int16_t)mpu.getAngleY());
+  // dog.string(0, 4, font_6x8, str);
+
+  fx = -5 * (int16_t)mpu.getAngleX();
+  fy = 5 * (int16_t)mpu.getAngleY();
+
   for (uint16_t i = 0; i < Particle::nParticles; ++i)
     particles[i].update(fx, fy);
   for (uint16_t i = 0; i < Particle::nParticles; ++i)
-    particles[i].update(fx, fy);
+    particles[i].updated = false;
   redraw();
   delay(60);
 }

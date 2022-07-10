@@ -5,7 +5,6 @@
 Particle *particles;
 
 uint16_t Particle::nParticles = 0;
-uint16_t Particle::nextId = 1;
 
 void Particle::init(uint16_t nParticles_)
 {
@@ -22,6 +21,7 @@ void Particle::init(uint16_t nParticles_)
         break;
     }
     Particle &p = particles[i];
+    p.id = i + 1;
     p.x = x;
     p.y = y;
     grid.data[x][y] = p.id;
@@ -29,17 +29,17 @@ void Particle::init(uint16_t nParticles_)
 }
 
 Particle::Particle()
-    : id(nextId++), x(0), y(0), vx(0), vy(0), movX(0), movY(0), updated(false)
+    : id(0xffff), x(0), y(0), vx(0), vy(0), movX(0), movY(0), updated(false)
 {
 }
 
-void Particle::update(uint8_t fx, uint8_t fy)
+void Particle::update(int16_t fx, int16_t fy)
 {
   updated = true;
 
   // Add force to velocity (scaled); friction
-  vx += fx / 20;
-  vy += fy / 20;
+  vx += fx;
+  vy += fy;
   // if (vx + vy > 0)
   // {
   //   let noiseLevel = Math.sqrt(this.vx * *2, this.vy * *2) * 0.1;
@@ -47,14 +47,14 @@ void Particle::update(uint8_t fx, uint8_t fy)
   //   this.vy += random(-noiseLevel, noiseLevel);
   // }
   vx = vx * 9 / 10;
-  vy = vx * 9 / 10;
+  vy = vy * 9 / 10;
 
   // Add velocity to cumulative movement
   // If either reaches 1, we move
   movX += vx;
   movY += vy;
-  uint8_t dx = movX / 20;
-  uint8_t dy = movY / 20;
+  int8_t dx = movX / 100;
+  int8_t dy = movY / 100;
 
   if (dx == 0 && dy == 0)
     return;
@@ -81,9 +81,9 @@ void Particle::update(uint8_t fx, uint8_t fy)
   }
 }
 
-bool Particle::tryMove(uint8_t dx, uint8_t dy)
+bool Particle::tryMove(int8_t dx, int8_t dy)
 {
-  uint8_t trgX = x + dx,
+  int16_t trgX = x + dx,
           trgY = y + dy;
   if (trgX < 0 || trgX >= N_COLS)
     return false;
@@ -92,11 +92,11 @@ bool Particle::tryMove(uint8_t dx, uint8_t dy)
   uint16_t idOther = grid.data[trgX][trgY];
   if (idOther == 0)
     return true;
-  Particle &other = particles[idOther];
+  Particle &other = particles[idOther - 1];
   if (other.updated)
     return false;
-  uint8_t otherTrgX = other.x + dx;
-  uint8_t otherTrgY = other.y + dy;
+  int16_t otherTrgX = other.x + dx;
+  int16_t otherTrgY = other.y + dy;
   if (otherTrgX < 0 || otherTrgX >= N_COLS)
     return false;
   if (otherTrgY < 0 || otherTrgY >= N_ROWS)
@@ -108,12 +108,12 @@ bool Particle::tryMove(uint8_t dx, uint8_t dy)
   return true;
 }
 
-void Particle::move(uint8_t dx, uint8_t dy)
+void Particle::move(int8_t dx, int8_t dy)
 {
   grid.data[x][y] = 0;
   x += dx;
   y += dy;
   grid.data[x][y] = id;
-  movX -= (uint16_t)dx * 20;
-  movY -= (uint16_t)dy * 20;
+  movX -= (int16_t)dx * 100;
+  movY -= (int16_t)dy * 100;
 }
