@@ -27,6 +27,8 @@ char str[STRLEN];
 const char *msgAngleX = "X angle: %3d";
 const char *msgAngleY = "Y angle: %3d";
 
+uint8_t pixelData[128 * 8];
+
 void flash(uint16_t delayAfter = 200)
 {
   digitalWrite(PIN_LED, LOW);
@@ -37,10 +39,11 @@ void flash(uint16_t delayAfter = 200)
 
 void redraw()
 {
+  uint16_t i = 0;
+  bool anyChange = false;
   for (uint8_t p = 0; p < 8; ++p)
   {
-    dog.position(0, p);
-    for (uint8_t x = 0; x < 128; ++x)
+    for (uint8_t x = 0; x < 128; ++x, ++i)
     {
       uint8_t val = 0;
       uint8_t y = p * 8;
@@ -49,8 +52,26 @@ void redraw()
         if (grid.data[x][y + ofs] != 0)
           val += (1 << ofs);
       }
-      dog.data(val);
+      uint8_t last = pixelData[i];
+      if (last != val)
+      {
+        anyChange = true;
+        pixelData[i] = val;
+      }
     }
+  }
+
+  if (anyChange)
+  {
+    i = 0;
+    for (uint8_t p = 0; p < 8; ++p)
+    {
+      dog.position(0, p);
+      for (uint8_t x = 0; x < 128; ++x, ++i)
+      {
+        dog.data(pixelData[i]);
+      }
+    }    
   }
 }
 
@@ -70,6 +91,11 @@ void setup()
   mpu.calcOffsets(true, true);
   delay(1000);
   mpu.calcOffsets(true, true);
+
+  uint16_t i = 0;
+  for (uint8_t p = 0; p < 8; ++p)
+    for (uint8_t x = 0; x < 128; ++x, ++i)
+      pixelData[i] = 0;
 
   redraw();
 }
