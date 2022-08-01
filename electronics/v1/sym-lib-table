@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name XIAO)(type Legacy)(uri "/Users/gabor/Desktop/Seeeduino XIAO KICAD/Seeeduino XIAO.lib")(options "")(descr ""))
+  (lib (name DOGM128)(type Legacy)(uri /Users/gabor/Desktop/EA.lib)(options "")(descr ""))
+  (lib (name sandsim-rescue)(type Legacy)(uri ${KIPRJMOD}/sandsim-rescue.lib)(options "")(descr ""))
+)

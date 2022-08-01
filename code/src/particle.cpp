@@ -1,44 +1,7 @@
 #include <Arduino.h>
+#include "globals.h"
 #include "particle.h"
-#include "grid.h"
-
-Particle *Particle::particles = NULL;
-
-uint16_t Particle::nParticles = 0;
-
-void Particle::init(uint16_t nParticles_)
-{
-  nParticles = nParticles_;
-  particles = new Particle[nParticles];
-  for (uint16_t i = 0; i < nParticles; ++i)
-  {
-    uint8_t x, y;
-    while (true)
-    {
-      x = random(N_COLS);
-      y = random(N_ROWS);
-      if (grid.data[x][y] == 0)
-        break;
-    }
-    Particle &p = particles[i];
-    p.x = x;
-    p.y = y;
-    grid.data[x][y] = 0x80 + (i % 128);
-  }
-}
-
-Particle *Particle::getParticle(uint8_t indicator, uint8_t x, uint8_t y)
-{
-  indicator &= 0x7f;
-  Particle *res = NULL;
-  for (uint16_t ofs = indicator; ofs < nParticles; ofs += 128)
-  {
-    res = particles + ofs;
-    if (res->getX() == x && res->getY() == y)
-      break;
-  }
-  return res;
-}
+#include "particle_accessor.h"
 
 Particle::Particle()
     : x(0), y(0), vx(0), vy(0), movX(0), movY(0)
@@ -61,7 +24,7 @@ int8_t brake(int8_t v)
   return q / 100;
 }
 
-void Particle::update(int16_t fx, int16_t fy)
+void Particle::update(int16_t fx, int16_t fy, ParticleAccessor &pr)
 {
   if (isUpdated())
     return;
@@ -94,9 +57,9 @@ void Particle::update(int16_t fx, int16_t fy)
 
   // Test new position. We can be kicking particle there,
   // But only if it hasn't been updated own yet.
-  if (tryMove(dx, dy))
+  if (tryMove(dx, dy, pr))
   {
-    move(dx, dy);
+    move(dx, dy, pr);
   }
   // If we cannot move there: we come to a halt
   else
@@ -124,6 +87,12 @@ int16_t Particle::getY()
   return (int16_t)(y & 0x7f);
 }
 
+void Particle::setXY(int16_t x, int16_t y)
+{
+  this->x = x;
+  this->y = y;
+}
+
 bool Particle::isUpdated()
 {
   return (y & 0x80) != 0;
@@ -137,7 +106,7 @@ void Particle::setUpdated(bool val)
     y &= 0x7f;
 }
 
-bool Particle::tryMove(int8_t dx, int8_t dy)
+bool Particle::tryMove(int8_t dx, int8_t dy, ParticleAccessor &pr)
 {
   int16_t cx = getX();
   int16_t cy = getY();
@@ -148,10 +117,10 @@ bool Particle::tryMove(int8_t dx, int8_t dy)
     return false;
   if (trgY < 0 || trgY >= N_ROWS)
     return false;
-  uint8_t indicator = grid.data[trgX][trgY];
+  uint8_t indicator = pr.getGridAt(trgX, trgY);
   if (indicator == 0)
     return true;
-  Particle *other = getParticle(indicator, trgX, trgY);
+  Particle *other = pr.getParticle(indicator, trgX, trgY);
   if (other->isUpdated())
     return false;
   int16_t otherTrgX = other->getX() + dx;
@@ -160,25 +129,25 @@ bool Particle::tryMove(int8_t dx, int8_t dy)
     return false;
   if (otherTrgY < 0 || otherTrgY >= N_ROWS)
     return false;
-  if (grid.data[otherTrgX][otherTrgY] != 0)
+  if (pr.getGridAt(otherTrgX, otherTrgY) != 0)
     return false;
-  other->move(dx, dy);
+  other->move(dx, dy, pr);
   other->setUpdated(true);
   return true;
 }
 
-void Particle::move(int8_t dx, int8_t dy)
+void Particle::move(int8_t dx, int8_t dy, ParticleAccessor &pr)
 {
   bool updated = isUpdated();
   int16_t cx = getX();
   int16_t cy = getY();
 
-  uint8_t indicator = grid.data[cx][cy];
-  grid.data[cx][cy] = 0;
+  uint8_t indicator = pr.getGridAt(cx, cy);
+  pr.setGridAt(cx, cy, 0);
 
   x = cx + dx;
   y = cy + dy;
-  grid.data[x][y] = indicator;
+  pr.setGridAt(x, y, indicator);
 
   if (updated)
     y |= 0x80;

@@ -1,0 +1,362 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Device:Battery_Cell BT1
+U 1 1 62D220BA
+P 1100 2650
+F 0 "BT1" H 1218 2746 50  0000 L CNN
+F 1 "Battery" H 1218 2655 50  0000 L CNN
+F 2 "Battery:Battery_CR2032" V 1100 2710 50  0001 C CNN
+F 3 "~" V 1100 2710 50  0001 C CNN
+	1    1100 2650
+	1    0    0    -1  
+$EndComp
+$Comp
+L XIAO:SeeeduinoXIAO U1
+U 1 1 62D227C0
+P 2800 2700
+F 0 "U1" H 2775 1761 50  0000 C CNN
+F 1 "SeeeduinoXIAO" H 2775 1670 50  0000 C CNN
+F 2 "XIAO:XIAO-MOUDLE14P-2.54-21X17.8MM_Pins" H 2450 2900 50  0001 C CNN
+F 3 "" H 2450 2900 50  0001 C CNN
+	1    2800 2700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3600 2550 4350 2550
+Wire Wire Line
+	4350 2550 4350 1000
+Wire Wire Line
+	3600 2400 4250 2400
+Connection ~ 4250 5450
+Wire Wire Line
+	4250 5450 4500 5450
+$Comp
+L DOGM128:EA-DOGM128W-6 U2
+U 1 1 62D27F39
+P 5650 2650
+F 0 "U2" H 6378 3203 60  0000 L CNN
+F 1 "EA-DOGM128W-6" H 6378 3097 60  0000 L CNN
+F 2 "DOGM128:EA_DOGM128-6" V 6050 3150 60  0001 C CNN
+F 3 "" H 6000 2600 60  0001 C CNN
+F 4 "ELECTRONIC ASSEMBLY" V 5950 3150 60  0001 C CNN "Manufacturer"
+	1    5650 2650
+	1    0    0    -1  
+$EndComp
+$Comp
+L DOGM128:EA-DOGM128W-6 U2
+U 2 1 62D28F12
+P 6300 5300
+F 0 "U2" H 6650 7287 60  0000 C CNN
+F 1 "EA-DOGM128W-6" H 6650 7181 60  0000 C CNN
+F 2 "DOGM128:EA_DOGM128-6" V 6700 5800 60  0001 C CNN
+F 3 "" H 6650 5250 60  0001 C CNN
+F 4 "ELECTRONIC ASSEMBLY" V 6600 5800 60  0001 C CNN "Manufacturer"
+	2    6300 5300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3600 3000 4450 3000
+Wire Wire Line
+	4450 3000 4450 1850
+Wire Wire Line
+	4450 1850 5450 1850
+Wire Wire Line
+	3600 2700 4550 2700
+Wire Wire Line
+	4550 2700 4550 1750
+Wire Wire Line
+	4550 1750 5450 1750
+Wire Wire Line
+	1950 2400 1800 2400
+Wire Wire Line
+	1800 2400 1800 1650
+Wire Wire Line
+	1800 1650 4650 1650
+Wire Wire Line
+	4650 1650 4650 2250
+Wire Wire Line
+	4650 2250 5450 2250
+Wire Wire Line
+	1950 2550 1700 2550
+Wire Wire Line
+	1700 2550 1700 1550
+Wire Wire Line
+	1700 1550 4750 1550
+Wire Wire Line
+	4750 1550 4750 2150
+Wire Wire Line
+	4750 2150 5450 2150
+Wire Wire Line
+	1950 2700 1600 2700
+Wire Wire Line
+	1600 2700 1600 1450
+Wire Wire Line
+	1600 1450 4850 1450
+Wire Wire Line
+	4850 1450 4850 2550
+Wire Wire Line
+	4850 2550 5450 2550
+Wire Wire Line
+	5250 3800 5250 3600
+Wire Wire Line
+	4350 1000 5250 1000
+$Comp
+L Device:CP C1
+U 1 1 62D33855
+P 4500 5300
+F 0 "C1" H 4500 5450 50  0000 L CNN
+F 1 "CP" H 4618 5255 50  0001 L CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_L10mm_P2.50mm_Lying" H 4538 5150 50  0001 C CNN
+F 3 "~" H 4500 5300 50  0001 C CNN
+	1    4500 5300
+	1    0    0    -1  
+$EndComp
+Connection ~ 4500 5450
+Wire Wire Line
+	4500 5450 4750 5450
+Wire Wire Line
+	4500 4100 4500 5150
+$Comp
+L Device:CP C2
+U 1 1 62D386F2
+P 4750 5300
+F 0 "C2" H 4750 5450 50  0000 L CNN
+F 1 "CP" H 4868 5255 50  0001 L CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_L10mm_P2.50mm_Lying" H 4788 5150 50  0001 C CNN
+F 3 "~" H 4750 5300 50  0001 C CNN
+	1    4750 5300
+	1    0    0    -1  
+$EndComp
+Connection ~ 4750 5450
+$Comp
+L Device:CP C3
+U 1 1 62D38BBC
+P 5000 5300
+F 0 "C3" H 5000 5450 50  0000 L CNN
+F 1 "CP" H 5118 5255 50  0001 L CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_L10mm_P2.50mm_Lying" H 5038 5150 50  0001 C CNN
+F 3 "~" H 5000 5300 50  0001 C CNN
+	1    5000 5300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C4
+U 1 1 62D3934D
+P 5250 5300
+F 0 "C4" H 5250 5450 50  0000 L CNN
+F 1 "CP" H 5368 5255 50  0001 L CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_L10mm_P2.50mm_Lying" H 5288 5150 50  0001 C CNN
+F 3 "~" H 5250 5300 50  0001 C CNN
+	1    5250 5300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C5
+U 1 1 62D39837
+P 5500 5300
+F 0 "C5" H 5500 5450 50  0000 L CNN
+F 1 "CP" H 5618 5255 50  0001 L CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_L10mm_P2.50mm_Lying" H 5538 5150 50  0001 C CNN
+F 3 "~" H 5500 5300 50  0001 C CNN
+	1    5500 5300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C6
+U 1 1 62D39F48
+P 5750 5300
+F 0 "C6" H 5750 5450 50  0000 L CNN
+F 1 "CP" H 5868 5255 50  0001 L CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_L10mm_P2.50mm_Lying" H 5788 5150 50  0001 C CNN
+F 3 "~" H 5750 5300 50  0001 C CNN
+	1    5750 5300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5250 3800 6100 3800
+Wire Wire Line
+	4500 4100 6100 4100
+Wire Wire Line
+	4750 5150 4750 4400
+Wire Wire Line
+	4750 4400 6100 4400
+Wire Wire Line
+	6100 4500 5000 4500
+Wire Wire Line
+	5000 4500 5000 5150
+Wire Wire Line
+	5250 5150 5250 4600
+Wire Wire Line
+	5250 4600 6100 4600
+Wire Wire Line
+	6100 4700 5500 4700
+Wire Wire Line
+	5500 4700 5500 5150
+Wire Wire Line
+	5750 5150 5750 4800
+Wire Wire Line
+	5750 4800 6100 4800
+Wire Wire Line
+	6100 5100 6000 5100
+Wire Wire Line
+	6000 5100 6000 5200
+Wire Wire Line
+	4750 5450 5000 5450
+Connection ~ 5000 5450
+Wire Wire Line
+	5000 5450 5250 5450
+Connection ~ 5250 5450
+Wire Wire Line
+	5250 5450 5500 5450
+Connection ~ 5500 5450
+Wire Wire Line
+	5500 5450 5750 5450
+Connection ~ 5750 5450
+Wire Wire Line
+	5750 5450 6000 5450
+Wire Wire Line
+	6000 5200 6100 5200
+Connection ~ 6000 5200
+Wire Wire Line
+	6000 5200 6000 5450
+Wire Wire Line
+	4250 2400 4250 5450
+Wire Wire Line
+	5250 3600 6100 3600
+Connection ~ 5250 3600
+Wire Wire Line
+	1100 2750 1100 5450
+Wire Wire Line
+	1100 5450 4250 5450
+Wire Wire Line
+	1100 2450 1100 1000
+Wire Wire Line
+	5250 1000 5250 3600
+$Comp
+L Device:CP C9
+U 1 1 62D6100B
+P 7350 5000
+F 0 "C9" H 7350 5150 50  0000 L CNN
+F 1 "CP" H 7468 4955 50  0001 L CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_L10mm_P2.50mm_Lying" H 7388 4850 50  0001 C CNN
+F 3 "~" H 7350 5000 50  0001 C CNN
+	1    7350 5000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7200 4800 7350 4800
+Wire Wire Line
+	7350 4800 7350 4850
+Wire Wire Line
+	7350 5150 7350 5200
+Wire Wire Line
+	7350 5200 7200 5200
+$Comp
+L Device:CP C7
+U 1 1 62D64CF4
+P 7350 3800
+F 0 "C7" H 7350 3950 50  0000 L CNN
+F 1 "CP" H 7468 3755 50  0001 L CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_L10mm_P2.50mm_Lying" H 7388 3650 50  0001 C CNN
+F 3 "~" H 7350 3800 50  0001 C CNN
+	1    7350 3800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C8
+U 1 1 62D65B3B
+P 7350 4200
+F 0 "C8" H 7350 4350 50  0000 L CNN
+F 1 "CP" H 7468 4155 50  0001 L CNN
+F 2 "Capacitor_THT:CP_Radial_D5.0mm_L10mm_P2.50mm_Lying" H 7388 4050 50  0001 C CNN
+F 3 "~" H 7350 4200 50  0001 C CNN
+	1    7350 4200
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	7200 3600 7350 3600
+Wire Wire Line
+	7350 3600 7350 3650
+Wire Wire Line
+	7350 3950 7350 4000
+Wire Wire Line
+	7200 4000 7350 4000
+Connection ~ 7350 4000
+Wire Wire Line
+	7350 4000 7350 4050
+Wire Wire Line
+	7200 4400 7350 4400
+Wire Wire Line
+	7350 4400 7350 4350
+$Comp
+L Sensor_Motion:MPU_Breakout U3
+U 1 1 62D1FEFB
+P 8500 3200
+F 0 "U3" H 7970 3246 50  0000 R CNN
+F 1 "MPU_Breakout" H 7970 3155 50  0000 R CNN
+F 2 "Sensor_Motion:MPU_Breakout" H 8150 2650 50  0001 C CIN
+F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/atmel-2586-avr-8-bit-microcontroller-attiny25-attiny45-attiny85_datasheet.pdf" H 8500 3200 50  0001 C CNN
+	1    8500 3200
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	5250 1000 8500 1000
+Wire Wire Line
+	8500 1000 8500 2600
+Connection ~ 5250 1000
+Wire Wire Line
+	8500 3800 8500 5450
+Wire Wire Line
+	8500 5450 6000 5450
+Connection ~ 6000 5450
+Wire Wire Line
+	1950 2850 1800 2850
+Wire Wire Line
+	1800 2850 1800 3800
+Wire Wire Line
+	1800 3800 4700 3800
+Wire Wire Line
+	4700 3800 4700 3000
+Wire Wire Line
+	4700 3000 7900 3000
+Wire Wire Line
+	1950 3000 1700 3000
+Wire Wire Line
+	1700 3000 1700 3900
+Wire Wire Line
+	1700 3900 4800 3900
+Wire Wire Line
+	4800 3900 4800 2900
+Wire Wire Line
+	4800 2900 7900 2900
+$Comp
+L Switch:SW_SPST SW1
+U 1 1 62D2BED1
+P 1800 1000
+F 0 "SW1" H 1800 1143 50  0000 C CNN
+F 1 "SW_SPST" H 1800 1144 50  0001 C CNN
+F 2 "Connector_Wire:SolderWire-0.25sqmm_1x02_P4.5mm_D0.65mm_OD2mm" H 1800 1000 50  0001 C CNN
+F 3 "~" H 1800 1000 50  0001 C CNN
+	1    1800 1000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1100 1000 1600 1000
+Wire Wire Line
+	2000 1000 4350 1000
+Connection ~ 4350 1000
+$EndSCHEMATC

@@ -1,0 +1,4 @@
+(fp_lib_table
+  (lib (name XIAO)(type KiCad)(uri "/Users/gabor/Desktop/Seeeduino XIAO KICAD")(options "")(descr ""))
+  (lib (name DOGM128)(type KiCad)(uri /Users/gabor/Desktop/DOGM128)(options "")(descr ""))
+)
