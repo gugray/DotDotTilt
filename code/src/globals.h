@@ -3,11 +3,12 @@
 
 #include <DOG7565R.h>
 #include <MPU6050_light.h>
-
-#define N_ROWS 64
-#define N_COLS 128
+#include "canvas.h"
 
 extern DOG7565R dog;
 extern MPU6050 mpu;
+extern Canvas canvas;
+
+void flushCanvasToDisplay();
 
 #endif

@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <font_6x8.h>
 #include "globals.h"
 #include "particle.h"
 #include "prog_sand.h"
@@ -43,13 +42,6 @@ SandProg::SandProg()
     p.setXY(x, y);
     grid[x][y] = 0x80 + (i % 128);
   }
-
-
-  uint16_t i = 0;
-  for (uint8_t p = 0; p < 8; ++p)
-    for (uint8_t x = 0; x < 128; ++x, ++i)
-      pixelData[i] = 0;
-  redraw();
 }
 
 SandProg::~SandProg()
@@ -83,7 +75,6 @@ void SandProg::setGridAt(uint8_t x, uint8_t y, uint8_t val)
 void SandProg::redraw()
 {
   uint16_t i = 0;
-  bool anyChange = false;
   for (uint8_t p = 0; p < 8; ++p)
   {
     for (uint8_t x = 0; x < 128; ++x, ++i)
@@ -95,24 +86,11 @@ void SandProg::redraw()
         if (grid[x][y + ofs] != 0)
           val += (1 << ofs);
       }
-      uint8_t last = pixelData[i];
+      uint8_t last = canvas.pixels[i];
       if (last != val)
       {
-        anyChange = true;
-        pixelData[i] = val;
-      }
-    }
-  }
-
-  if (anyChange)
-  {
-    i = 0;
-    for (uint8_t p = 0; p < 8; ++p)
-    {
-      dog.position(0, p);
-      for (uint8_t x = 0; x < 128; ++x, ++i)
-      {
-        dog.data(pixelData[i]);
+        canvas.dirty = true;
+        canvas.pixels[i] = val;
       }
     }
   }
@@ -120,6 +98,7 @@ void SandProg::redraw()
 
 uint16_t SandProg::frame(uint32_t fc)
 {
+  bool needsRedraw = false;
   int16_t accZ = (int16_t)(mpu.getAccZ() * 100.0F);
   int16_t angleX = mpu.getAngleX() * 10.0F;
   int16_t angleY = mpu.getAngleY() * 10.0F;
@@ -143,12 +122,12 @@ uint16_t SandProg::frame(uint32_t fc)
 
   if (fcTiltDn > 0)
   {
-    dog.string(0, 0, font_6x8, "   FLIP-DN");
+    canvas.fwText(0, 0, "   FLIP-DN");
     --fcTiltDn;
   }
   else if (fcTiltUp > 0)
   {
-    dog.string(0, 0, font_6x8, "   FLIP-UP");
+    canvas.fwText(0, 0, "   FLIP-UP");
     --fcTiltUp;
   }
   else
@@ -168,6 +147,5 @@ uint16_t SandProg::frame(uint32_t fc)
   // sprintf(msg, "X:  %4d   Y: %4d  ", angleX, angleY);
   // dog.string(0, 2, font_6x8, msg);
   // Serial.printf("AngleX: %4d\tAngleY: %4d\tAccZ: %4d\n", angleX, angleY, (int16_t)(mpu.getAccZ() * 100.0F));
-
   return PRG_CONTINUE;
 }

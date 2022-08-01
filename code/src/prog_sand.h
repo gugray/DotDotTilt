@@ -11,7 +11,6 @@ class Particle;
 class SandProg : public Prog, ParticleAccessor
 {
 private:
-  uint8_t pixelData[128 * 8];
   uint8_t grid[N_COLS][N_ROWS];
   uint16_t nParticles;
   Particle *particles;
