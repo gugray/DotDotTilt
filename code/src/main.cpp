@@ -1,8 +1,12 @@
 #include <Arduino.h>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wextra"
 #include <SAMDTimerInterrupt.h>
 #include <SAMD_ISR_Timer.h>
+#pragma GCC diagnostic pop
 #include "globals.h"
-#include "prog_sand.h"
+#include "sand/sand_prog.h"
+#include "cube/cube_prog.h"
 
 #define RESET_PIN 3
 #define CS_PIN 1
@@ -12,15 +16,15 @@
 #define HW_TIMER_INTERVAL_MS 50
 #define TIMER_INTERVAL_10_MS 10L
 
+bool showFrameMicros = false;
+bool progRunning = false;
 DOG7565R dog;
 MPU6050 mpu(Wire);
 Canvas canvas;
 SAMDTimer ITimer(TIMER_TC3);
 SAMD_ISR_Timer ISR_Timer;
-
+char buf[BUF_SZ];
 Prog *prog = 0;
-
-char msg[32];
 
 void flushCanvasToDisplay()
 {
@@ -45,18 +49,30 @@ void TimerHandler()
 
 uint32_t fc = 0;
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-variable"
+
 void frame()
 {
+  uint32_t tStart = micros();
   mpu.update();
 
   if (prog != 0)
   {
     uint16_t pres = prog->frame(fc);
   }
-  // sprintf(msg, "%5d usec", (int16_t)(tEnd - tStart));
+  if (showFrameMicros)
+  {
+    uint32_t tEnd = micros();
+    sprintf(buf, "%5d usec", (int16_t)(tEnd - tStart));
+    canvas.fwText(68, 0, buf);
+  }
   flushCanvasToDisplay();
   ++fc;
 }
+
+#pragma GCC diagnostic pop
+
 
 void setup()
 {
@@ -86,7 +102,8 @@ void setup()
   mpu.calcOffsets();
   mpu.update();
 
-  prog = new SandProg();
+  // prog = new SandProg();
+  prog = new CubeProg();
 
   ITimer.attachInterruptInterval_MS(HW_TIMER_INTERVAL_MS, TimerHandler);
   ISR_Timer.setInterval(20, frame);
@@ -100,7 +117,7 @@ void setup()
     flushCanvasToDisplay();
   }
 
-  ((SandProg *)prog)->simActive = 1;
+  progRunning = true;
 }
 
 void loop()

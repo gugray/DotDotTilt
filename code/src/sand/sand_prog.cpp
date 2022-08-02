@@ -1,7 +1,7 @@
 #include <Arduino.h>
-#include "globals.h"
+#include "../globals.h"
 #include "particle.h"
-#include "prog_sand.h"
+#include "sand_prog.h"
 
 #define N_PARTICLES 2048
 #define F_ANGLE_MUL 5
@@ -98,12 +98,11 @@ void SandProg::redraw()
 
 uint16_t SandProg::frame(uint32_t fc)
 {
-  bool needsRedraw = false;
   int16_t accZ = (int16_t)(mpu.getAccZ() * 100.0F);
   int16_t angleX = mpu.getAngleX() * 10.0F;
   int16_t angleY = mpu.getAngleY() * 10.0F;
 
-  if (simActive != 0 && fc % 2 == 0)
+  if (progRunning && fc % 2 == 0)
   {
     fx = F_ANGLE_MUL * angleX / 10;
     fy = F_ANGLE_MUL * angleY / 10;
@@ -133,7 +132,6 @@ uint16_t SandProg::frame(uint32_t fc)
   else
   {
     int16_t flipThreshold = 25;
-    int16_t tapThreshold = 20;
     if (lastAngleY[1] - lastAngleY[3] > flipThreshold && angleY - lastAngleY[1] < -flipThreshold)
       fcTiltDn = 16;
     else if (lastAngleY[1] - lastAngleY[3] < -flipThreshold && angleY - lastAngleY[1] > flipThreshold)

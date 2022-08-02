@@ -1,8 +1,8 @@
-#ifndef PROG_SAND_H
-#define PROG_SAND_H
+#ifndef SAND_PROG_H
+#define SAND_PROG_H
 
-#include "globals.h"
-#include "prog.h"
+#include "../globals.h"
+#include "../prog.h"
 #include "particle_accessor.h"
 
 
@@ -14,9 +14,6 @@ private:
   uint8_t grid[N_COLS][N_ROWS];
   uint16_t nParticles;
   Particle *particles;
-
-public:
-  int8_t simActive = 0;
 
 private:
   Particle *getParticle(uint8_t indicator, uint8_t x, uint8_t y);

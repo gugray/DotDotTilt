@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "globals.h"
+#include "../globals.h"
 #include "particle.h"
 #include "particle_accessor.h"
 

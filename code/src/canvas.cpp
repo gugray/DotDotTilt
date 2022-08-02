@@ -21,6 +21,30 @@ void Canvas::clear()
 	}
 }
 
+void Canvas::setPixel(uint8_t x, uint8_t y, bool on)
+{
+	dirty = true;
+	uint16_t row = y / 8;
+	uint8_t bit = y % 8;
+	if (on)
+		pixels[row * N_COLS + x] |= (1 << bit);
+	else
+		pixels[row * N_COLS + x] &= ~(1 << bit);
+}
+
+void Canvas::line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2)
+{
+  float dx = x2 - x1;
+  float dy = y2 - y1;
+  float len = round(sqrt(dx*dx + dy*dy));
+  for (float i = 0; i <= len; i += 1)
+	{
+		float x = x1 + dx * i / len;
+		float y = y1 + dy * i / len;
+		setPixel(round(x), round(y), true);
+	}
+}
+
 void Canvas::fwText(uint8_t x, uint8_t line, const char *str)
 {
 	dirty = true;
