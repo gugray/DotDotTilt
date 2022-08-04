@@ -70,11 +70,8 @@ void updateAngVelo(float &angVelo, float change)
   }
 }
 
-uint16_t CubeProg::frame(uint32_t fc)
+uint16_t CubeProg::frame(uint32_t fc, uint8_t currentGesture)
 {
-  if (!progRunning)
-    return PRG_CONTINUE;
-
   updateAngVelo(angVeloY, -mpu.getAngleX() / 300.0F);
   updateAngVelo(angVeloX, mpu.getAngleY() / 300.0F);
 

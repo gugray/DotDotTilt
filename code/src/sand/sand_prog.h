@@ -24,7 +24,7 @@ private:
 public:
   SandProg();
   ~SandProg();
-  uint16_t frame(uint32_t fc);
+  uint16_t frame(uint32_t fc, uint8_t currentGesture);
 };
 
 #endif

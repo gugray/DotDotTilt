@@ -8,14 +8,6 @@
 
 int16_t fx = 0, fy = 0;
 
-
-uint32_t fcTapDn = 0, fcTapUp = 0, fcTiltUp = 0, fcTiltDn = 0;
-int16_t lastAccZ = 100;
-
-#define N_LAST_ANGLES 5
-int16_t lastAngleY[N_LAST_ANGLES];
-
-
 SandProg::SandProg()
 {
   for (uint8_t x = 0; x < N_COLS; ++x)
@@ -96,13 +88,13 @@ void SandProg::redraw()
   }
 }
 
-uint16_t SandProg::frame(uint32_t fc)
+uint16_t SandProg::frame(uint32_t fc, uint8_t currentGesture)
 {
   int16_t accZ = (int16_t)(mpu.getAccZ() * 100.0F);
   int16_t angleX = mpu.getAngleX() * 10.0F;
   int16_t angleY = mpu.getAngleY() * 10.0F;
 
-  if (progRunning && fc % 2 == 0)
+  if (fc % 2 == 0)
   {
     fx = F_ANGLE_MUL * angleX / 10;
     fy = F_ANGLE_MUL * angleY / 10;
@@ -118,29 +110,6 @@ uint16_t SandProg::frame(uint32_t fc)
       particles[i].setUpdated(false);
     redraw();
   }
-
-  if (fcTiltDn > 0)
-  {
-    canvas.fwText(0, 0, "   FLIP-DN");
-    --fcTiltDn;
-  }
-  else if (fcTiltUp > 0)
-  {
-    canvas.fwText(0, 0, "   FLIP-UP");
-    --fcTiltUp;
-  }
-  else
-  {
-    int16_t flipThreshold = 25;
-    if (lastAngleY[1] - lastAngleY[3] > flipThreshold && angleY - lastAngleY[1] < -flipThreshold)
-      fcTiltDn = 16;
-    else if (lastAngleY[1] - lastAngleY[3] < -flipThreshold && angleY - lastAngleY[1] > flipThreshold)
-      fcTiltUp = 16;
-  }
-  lastAccZ = accZ;
-  for (int8_t i = N_LAST_ANGLES - 2; i >= 0; --i)
-    lastAngleY[i + 1] = lastAngleY[i];
-  lastAngleY[0] = angleY;
 
   // sprintf(msg, "X:  %4d   Y: %4d  ", angleX, angleY);
   // dog.string(0, 2, font_6x8, msg);
